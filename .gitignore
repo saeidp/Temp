@@ -129,6 +129,6 @@ dmypy.json
 .pyre/
 
 *.png
-*.jpg
 .vscode/
 model/
+*.gz
