@@ -129,6 +129,7 @@ dmypy.json
 .pyre/
 
 *.png
+*.mp4
 .vscode/
 model/
 *.gz

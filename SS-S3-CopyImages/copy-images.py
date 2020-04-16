@@ -9,15 +9,16 @@ import boto3
 # aws s3 rm s3://pipe-line-test/ss-demo/validation --recursive
 # aws s3 rm s3://pipe-line-test/ss-demo/validation_annotation --recursive
 
-Bucket = 'pipe-line-test'
-Prefix = 'ss-demo'
-Answere = 'both'
+Bucket = 'pipe-line-test-2'
 
-# Prefix = 'ss-demo-human-yes'
-# Answere = 'yes'
+#Prefix = 'ss-demo'
+#Answere = 'both'
 
-# Prefix = 'ss-demo-human-no'
-# Answere = 'no'
+#Prefix = 'ss-demo-human-yes'
+#Answere = 'yes'
+
+Prefix = 'ss-demo-human-no'
+Answere = 'no'
 
 with jsonlines.open('output.manifest', 'r') as reader:
     lines = list(reader)
@@ -25,8 +26,23 @@ with jsonlines.open('output.manifest', 'r') as reader:
 np.random.shuffle(lines)
 # print(lines[0]['RovPipeLabelingJob-ref-metadata']['human-annotated'])
 if(Answere != 'both'):
-    lines = [line for line in lines if (
-        line.get('RovPipeLabelingJob-ref') != None and line['RovPipeLabelingJob-ref-metadata']['human-annotated'] == Answere)]
+    # if(Answere == 'no'):
+    #     newLines = []
+    #     for line in lines:
+    #         source = line.get("source-ref")
+    #         words = source.split("/")
+    #         if(line.get('RovPipeLabelingJob-ref') != None and words[3] == "dataset" and line['RovPipeLabelingJob-ref-metadata']['human-annotated'] == "no"):
+    #             newLines.append(line)
+    #     lines = newLines
+
+    if (Answere == 'no'):
+        lines = [line for line in lines if (
+            line.get('RovPipeLabelingJob-ref') != None and line['RovPipeLabelingJob-ref-metadata']['human-annotated'] == "no")]
+
+    if (Answere == 'yes'):
+        lines = [line for line in lines if (
+            line.get('RovPipeLabelingJob-ref') != None and line['RovPipeLabelingJob-ref-metadata']['human-annotated'] == "yes")]
+
 else:
     lines = [line for line in lines if (
         line.get('RovPipeLabelingJob-ref') != None)]
